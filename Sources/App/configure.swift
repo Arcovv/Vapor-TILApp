@@ -17,13 +17,18 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
   middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
   services.register(middlewares)
   
+  // Get info from Environment
+  let hostname = Environment.get("DATABASE_HOSTNAME") ?? "localhost"
+  let username = Environment.get("DATABASE_USER") ?? "vapor"
+  let databaseName = Environment.get("DATABASE_DB") ?? "vapor"
+  let password = Environment.get("DATABASE_PASSWORD") ?? "password"
+  
   // Configure a database
   let databaseConfig = PostgreSQLDatabaseConfig(
-    hostname: "localhost",
-    port: 5432,
-    username: "vapor",
-    database: "vapor",
-    password: "password"
+    hostname: hostname,
+    username: username,
+    database: databaseName,
+    password: password
   )
   
   let database = PostgreSQLDatabase(config: databaseConfig)
